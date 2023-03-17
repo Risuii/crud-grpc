@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+option go_package = "crud-grpc/proto";
+
+package user;
+
+message User {
+    int64 id = 1;
+    string name = 2;
+    int64 age = 3;
+    string email = 4;
+}
+
+message GetUserReq {
+    int64 id = 1;
+}
+
+message GetUserResp {
+    User user = 1;
+}
+
+message GetAllReq {
+
+}
+
+message GetAllResp {
+    repeated User users = 1;
+}
+
+message AddUserReq {
+    User user = 1;
+}
+
+message AddUserResp {
+    bool success = 1;
+}
+
+// message UpdateReq {
+//     User userUpdate = 1;
+// }
+
+// message UpdateResp {
+//     repeated User userUpdate = 1;
+// }
+
+// message DeleteResp {
+//     bool success = 1;
+// }
+
+service UserService {
+    rpc AddUser(AddUserReq) returns (AddUserResp);
+    rpc FindUserByID(GetUserReq) returns (GetUserResp);
+    rpc GetAll(GetAllReq) returns (GetAllResp);
+    // rpc UpdateUser(UpdateReq) returns (UpdateResp);
+    // rpc DeleteUser(GetUserReq) returns (DeleteResp);
+}
