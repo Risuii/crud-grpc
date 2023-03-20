@@ -64,10 +64,29 @@ func (us *UserServer) GetAll(ctx context.Context, user *pb.GetAllReq) (*pb.GetAl
 	return resp, nil
 }
 
-// func (us *UserServer) UpdateUser(ctx context.Context, user *pb.UpdateReq) (*pb.UpdateResp, error) {
-// 	return nil, nil
-// }
+func (us *UserServer) UpdateUser(ctx context.Context, user *pb.UpdateReq) (*pb.UpdateResp, error) {
 
-// func (us *UserServer) DeleteUser(ctx context.Context, user *pb.DeleteResp) (*pb.DeleteResp, error) {
-// 	return nil, nil
-// }
+	data := us.Usecase.UpdateUser(int(user.UserUpdate.GetId()), model.User{
+		Name:  user.UserUpdate.GetName(),
+		Age:   int(user.UserUpdate.GetAge()),
+		Email: user.UserUpdate.GetEmail(),
+	})
+
+	return &pb.UpdateResp{
+		UserUpdate: &pb.User{
+			Id:    int64(data.ID),
+			Name:  data.Name,
+			Age:   int64(data.Age),
+			Email: data.Email,
+		},
+	}, ctx.Err()
+}
+
+func (us *UserServer) DeleteUser(ctx context.Context, user *pb.DeleteUserReq) (*pb.DeleteResp, error) {
+
+	us.Usecase.DeleteUser(int(user.GetId()))
+
+	return &pb.DeleteResp{
+		Success: true,
+	}, ctx.Err()
+}

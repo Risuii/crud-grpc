@@ -35,22 +35,26 @@ message AddUserResp {
     bool success = 1;
 }
 
-// message UpdateReq {
-//     User userUpdate = 1;
-// }
+message UpdateReq {
+    User userUpdate = 1;
+}
 
-// message UpdateResp {
-//     repeated User userUpdate = 1;
-// }
+message UpdateResp {
+    User userUpdate = 1;
+}
 
-// message DeleteResp {
-//     bool success = 1;
-// }
+message DeleteUserReq {
+    int64 id = 1;
+}
+
+message DeleteResp {
+    bool success = 1;
+}
 
 service UserService {
     rpc AddUser(AddUserReq) returns (AddUserResp);
     rpc FindUserByID(GetUserReq) returns (GetUserResp);
     rpc GetAll(GetAllReq) returns (GetAllResp);
-    // rpc UpdateUser(UpdateReq) returns (UpdateResp);
-    // rpc DeleteUser(GetUserReq) returns (DeleteResp);
+    rpc UpdateUser(UpdateReq) returns (UpdateResp);
+    rpc DeleteUser(DeleteUserReq) returns (DeleteResp);
 }

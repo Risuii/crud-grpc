@@ -62,6 +62,43 @@ func getOneUser(client pb.UserServiceClient, id int) {
 	fmt.Println(data)
 }
 
+func updateUser(client pb.UserServiceClient, id int, data model.User) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	s := &pb.UpdateReq{
+		UserUpdate: &pb.User{
+			Id:    int64(id),
+			Name:  data.Name,
+			Age:   int64(data.Age),
+			Email: data.Email,
+		},
+	}
+
+	updateUser, err := client.UpdateUser(ctx, s)
+	if err != nil {
+		log.Fatalln("error when update user", err)
+	}
+
+	fmt.Println(updateUser)
+}
+
+func deleteUser(client pb.UserServiceClient, id int) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	s := &pb.DeleteUserReq{
+		Id: int64(id),
+	}
+
+	data, err := client.DeleteUser(ctx, s)
+	if err != nil {
+		log.Fatalln("error when delete one user", err)
+	}
+
+	fmt.Println(data)
+}
+
 func main() {
 	var opts []grpc.DialOption
 
@@ -91,9 +128,27 @@ func main() {
 		Email: "test-2@test.com",
 	}
 
+	data3 := model.User{
+		ID:    3,
+		Name:  "test-3",
+		Age:   35,
+		Email: "test-3@test.com",
+	}
+
+	// dataUpdate := model.User{
+	// 	Name:  "test-update",
+	// 	Age:   40,
+	// 	Email: "test-update@test.com",
+	// }
+
 	addDataUser(client, data)
 	addDataUser(client, data2)
+	addDataUser(client, data3)
 
-	getAllDataUser(client)
-	getOneUser(client, 1)
+	// getAllDataUser(client)
+	// getOneUser(client, 2)
+
+	// updateUser(client, 1, dataUpdate)
+
+	// deleteUser(client, 2)
 }

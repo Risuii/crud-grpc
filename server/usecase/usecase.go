@@ -28,17 +28,21 @@ func (uc *UserClass) GetAll() []model.User {
 	return userData
 }
 
-// func (uc *UserClass) UpdateUser(id int, user model.User) response.Response {
-// 	return nil
-// }
+func (uc *UserClass) UpdateUser(id int, user model.User) model.User {
+	if id >= len(userData) {
+		return model.User{}
+	}
 
-// func (uc *UserClass) DeleteUser(id int) []model.User {
+	userData[id] = user
 
-// 	if id >= len(userData) {
-// 		return []model.User{}
-// 	}
+	return user
+}
 
-// 	userData = append(userData[:id], userData...)
+func (uc *UserClass) DeleteUser(id int) {
 
-// 	return userData
-// }
+	if id >= len(userData) {
+	}
+
+	userData = append(userData[:id], userData[id+1:]...)
+
+}
